@@ -6,9 +6,9 @@
 #define BUFFER_SIZE 4096
 #define COPY_MODE 0644
 
-// TODO: 判断是否为文件夹进行复制 -R参数
+// TODO: 判断是否为文件夹进行移动
 
-int ksh_cp(char **args)
+int ksh_mv(char **args)
 {
     int in_fd, out_fd, n_chars;
     char buf[BUFFER_SIZE];
@@ -45,5 +45,8 @@ int ksh_cp(char **args)
 
     close(in_fd);
     close(out_fd);
+
+    if(remove(args[1]) == -1)
+        perror("ksh");
     return 1;
 }
