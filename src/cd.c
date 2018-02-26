@@ -1,3 +1,4 @@
+//#include <stdio.h>
 /**
    @brief Bultin command: change directory.
    @param args List of args.  args[0] is "cd".  args[1] is the directory.
