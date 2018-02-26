@@ -43,15 +43,16 @@ int ksh_num_builtins() {
 int ksh_help(char **args)
 {
   int i;
-  printf("Stephen Brennan's KSH\n");
-  printf("Type program names and arguments, and hit enter.\n");
-  printf("The following are built in:\n");
+  printf("***************************\n");
+  printf("OS课设——KSH简单实现\n");
+  printf("***************************\n");
+  printf("输入命令名称和参数，按下回车执行\n");
+  printf("支持以下命令:\n");
 
   for (i = 0; i < ksh_num_builtins(); i++) {
-    printf("  %s\n", builtin_str[i]);
+    printf("%d.  %s\n", i+1, builtin_str[i]);
   }
 
-  printf("Use the man command for information on other programs.\n");
   return 1;
 }
 
