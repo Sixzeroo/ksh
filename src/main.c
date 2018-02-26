@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "cd.c"
+#include "pwd.c"
 
 /*
   Function Declarations for builtin shell commands:
@@ -18,13 +19,15 @@ int ksh_exit(char **args);
 char *builtin_str[] = {
   "cd",
   "help",
-  "exit"
+  "exit",
+  "pwd"
 };
 
 int (*builtin_func[]) (char **) = {
   &ksh_cd,
   &ksh_help,
-  &ksh_exit
+  &ksh_exit,
+  &ksh_pwd
 };
 
 int ksh_num_builtins() {
