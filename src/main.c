@@ -16,14 +16,28 @@
 #include "grep.c"
 #include "last.c"
 #include "sort.c"
-
+#include "mkdir.c"
+#include "cat.c"
+#include "whoami.c"
+#include "head.c"
+#include "kill.c"
+#include "ps.c"
+#include "tree.c"
+#include "df.c"
 /*
   Function Declarations for builtin shell commands:
  */
 int ksh_cd(char **args);
 int ksh_help(char **args);
 int ksh_exit(char **args);
-
+int ksh_mkdir(char **args);
+int ksh_cat(char **args);
+int ksh_whoami(char **args);
+int ksh_head(char **args);
+int ksh_kill(char **args);
+int ksh_ps(char **args);
+int ksh_tree(char **args);
+int ksh_df(char **args);
 /*
   List of builtin commands, followed by their corresponding functions.
  */
@@ -42,7 +56,15 @@ char *builtin_str[] = {
   "touch",
   "grep",
   "last",
-  "sort"
+  "sort",
+  "mkdir",
+  "cat",
+  "whoami",
+  "head",
+  "kill",
+  "ps",
+  "tree",
+  "df"
 };
 
 int (*builtin_func[]) (char **) = {
@@ -60,7 +82,15 @@ int (*builtin_func[]) (char **) = {
   &ksh_touch,
   &ksh_grep,
   &ksh_last,
-  &ksh_sort
+  &ksh_sort,
+  &ksh_mkdir,
+  &ksh_cat,
+  &ksh_whoami,
+  &ksh_head,
+  &ksh_kill,
+  &ksh_ps,
+  &ksh_tree,
+  &ksh_df
 };
 
 int ksh_num_builtins() {
