@@ -14,6 +14,7 @@
 #include "date.c"
 #include "touch.c"
 #include "grep.c"
+#include "last.c"
 
 /*
   Function Declarations for builtin shell commands:
@@ -38,7 +39,8 @@ char *builtin_str[] = {
   "who",
   "date",
   "touch",
-  "grep"
+  "grep",
+  "last"
 };
 
 int (*builtin_func[]) (char **) = {
@@ -54,7 +56,8 @@ int (*builtin_func[]) (char **) = {
   &ksh_who,
   &ksh_date,
   &ksh_touch,
-  &ksh_grep
+  &ksh_grep,
+  &ksh_last
 };
 
 int ksh_num_builtins() {
