@@ -10,6 +10,7 @@
 #include "mv.c"
 #include "rm.c"
 #include "time.c"
+#include "who.c"
 
 /*
   Function Declarations for builtin shell commands:
@@ -30,7 +31,8 @@ char *builtin_str[] = {
   "cp",
   "mv",
   "rm",
-  "time"
+  "time",
+  "who"
 };
 
 int (*builtin_func[]) (char **) = {
@@ -42,7 +44,8 @@ int (*builtin_func[]) (char **) = {
   &ksh_cp,
   &ksh_mv,
   &ksh_rm,
-  &ksh_time
+  &ksh_time,
+  &ksh_who
 };
 
 int ksh_num_builtins() {
