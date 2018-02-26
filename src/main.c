@@ -9,6 +9,7 @@
 #include "cp.c"
 #include "mv.c"
 #include "rm.c"
+#include "time.c"
 
 /*
   Function Declarations for builtin shell commands:
@@ -28,7 +29,8 @@ char *builtin_str[] = {
   "ls",
   "cp",
   "mv",
-  "rm"
+  "rm",
+  "time"
 };
 
 int (*builtin_func[]) (char **) = {
@@ -39,7 +41,8 @@ int (*builtin_func[]) (char **) = {
   &ksh_ls,
   &ksh_cp,
   &ksh_mv,
-  &ksh_rm
+  &ksh_rm,
+  &ksh_time
 };
 
 int ksh_num_builtins() {
