@@ -11,6 +11,7 @@
 #include "rm.c"
 #include "time.c"
 #include "who.c"
+#include "date.c"
 
 /*
   Function Declarations for builtin shell commands:
@@ -32,7 +33,8 @@ char *builtin_str[] = {
   "mv",
   "rm",
   "time",
-  "who"
+  "who",
+  "date"
 };
 
 int (*builtin_func[]) (char **) = {
@@ -45,7 +47,8 @@ int (*builtin_func[]) (char **) = {
   &ksh_mv,
   &ksh_rm,
   &ksh_time,
-  &ksh_who
+  &ksh_who,
+  &ksh_date
 };
 
 int ksh_num_builtins() {
