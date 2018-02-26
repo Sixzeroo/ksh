@@ -8,6 +8,7 @@
 #include "ls.c"
 #include "cp.c"
 #include "mv.c"
+#include "rm.c"
 
 /*
   Function Declarations for builtin shell commands:
@@ -26,7 +27,8 @@ char *builtin_str[] = {
   "pwd",
   "ls",
   "cp",
-  "mv"
+  "mv",
+  "rm"
 };
 
 int (*builtin_func[]) (char **) = {
@@ -36,7 +38,8 @@ int (*builtin_func[]) (char **) = {
   &ksh_pwd,
   &ksh_ls,
   &ksh_cp,
-  &ksh_mv
+  &ksh_mv,
+  &ksh_rm
 };
 
 int ksh_num_builtins() {
