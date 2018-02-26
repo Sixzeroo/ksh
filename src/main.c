@@ -8,9 +8,9 @@
 /*
   Function Declarations for builtin shell commands:
  */
-int lsh_cd(char **args);
-int lsh_help(char **args);
-int lsh_exit(char **args);
+int ksh_cd(char **args);
+int ksh_help(char **args);
+int ksh_exit(char **args);
 
 /*
   List of builtin commands, followed by their corresponding functions.
@@ -22,12 +22,12 @@ char *builtin_str[] = {
 };
 
 int (*builtin_func[]) (char **) = {
-  &lsh_cd,
-  &lsh_help,
-  &lsh_exit
+  &ksh_cd,
+  &ksh_help,
+  &ksh_exit
 };
 
-int lsh_num_builtins() {
+int ksh_num_builtins() {
   return sizeof(builtin_str) / sizeof(char *);
 }
 
@@ -40,14 +40,14 @@ int lsh_num_builtins() {
    @param args List of args.  Not examined.
    @return Always returns 1, to continue executing.
  */
-int lsh_help(char **args)
+int ksh_help(char **args)
 {
   int i;
-  printf("Stephen Brennan's LSH\n");
+  printf("Stephen Brennan's KSH\n");
   printf("Type program names and arguments, and hit enter.\n");
   printf("The following are built in:\n");
 
-  for (i = 0; i < lsh_num_builtins(); i++) {
+  for (i = 0; i < ksh_num_builtins(); i++) {
     printf("  %s\n", builtin_str[i]);
   }
 
@@ -60,7 +60,7 @@ int lsh_help(char **args)
    @param args List of args.  Not examined.
    @return Always returns 0, to terminate execution.
  */
-int lsh_exit(char **args)
+int ksh_exit(char **args)
 {
   return 0;
 }
@@ -70,7 +70,7 @@ int lsh_exit(char **args)
   @param args Null terminated list of arguments (including program).
   @return Always returns 1, to continue execution.
  */
-int lsh_launch(char **args)
+int ksh_launch(char **args)
 {
   pid_t pid;
   int status;
@@ -79,12 +79,12 @@ int lsh_launch(char **args)
   if (pid == 0) {
     // Child process
     if (execvp(args[0], args) == -1) {
-      perror("lsh");
+      perror("ksh");
     }
     exit(EXIT_FAILURE);
   } else if (pid < 0) {
     // Error forking
-    perror("lsh");
+    perror("ksh");
   } else {
     // Parent process
     do {
@@ -100,7 +100,7 @@ int lsh_launch(char **args)
    @param args Null terminated list of arguments.
    @return 1 if the shell should continue running, 0 if it should terminate
  */
-int lsh_execute(char **args)
+int ksh_execute(char **args)
 {
   int i;
 
@@ -109,30 +109,30 @@ int lsh_execute(char **args)
     return 1;
   }
 
-  for (i = 0; i < lsh_num_builtins(); i++) {
+  for (i = 0; i < ksh_num_builtins(); i++) {
     if (strcmp(args[0], builtin_str[i]) == 0) {
       return (*builtin_func[i])(args);
     }
   }
 
   printf("Use system shell:\n");
-  return lsh_launch(args);
+  return ksh_launch(args);
 }
 
-#define LSH_RL_BUFSIZE 1024
+#define KSH_RL_BUFSIZE 1024
 /**
    @brief Read a line of input from stdin.
    @return The line from stdin.
  */
-char *lsh_read_line(void)
+char *ksh_read_line(void)
 {
-  int bufsize = LSH_RL_BUFSIZE;
+  int bufsize = KSH_RL_BUFSIZE;
   int position = 0;
   char *buffer = malloc(sizeof(char) * bufsize);
   int c;
 
   if (!buffer) {
-    fprintf(stderr, "lsh: allocation error\n");
+    fprintf(stderr, "ksh: allocation error\n");
     exit(EXIT_FAILURE);
   }
 
@@ -152,51 +152,51 @@ char *lsh_read_line(void)
 
     // If we have exceeded the buffer, reallocate.
     if (position >= bufsize) {
-      bufsize += LSH_RL_BUFSIZE;
+      bufsize += KSH_RL_BUFSIZE;
       buffer = realloc(buffer, bufsize);
       if (!buffer) {
-        fprintf(stderr, "lsh: allocation error\n");
+        fprintf(stderr, "ksh: allocation error\n");
         exit(EXIT_FAILURE);
       }
     }
   }
 }
 
-#define LSH_TOK_BUFSIZE 64
-#define LSH_TOK_DELIM " \t\r\n\a"
+#define KSH_TOK_BUFSIZE 64
+#define KSH_TOK_DELIM " \t\r\n\a"
 /**
    @brief Split a line into tokens (very naively).
    @param line The line.
    @return Null-terminated array of tokens.
  */
-char **lsh_split_line(char *line)
+char **ksh_split_line(char *line)
 {
-  int bufsize = LSH_TOK_BUFSIZE, position = 0;
+  int bufsize = KSH_TOK_BUFSIZE, position = 0;
   char **tokens = malloc(bufsize * sizeof(char*));
   char *token, **tokens_backup;
 
   if (!tokens) {
-    fprintf(stderr, "lsh: allocation error\n");
+    fprintf(stderr, "ksh: allocation error\n");
     exit(EXIT_FAILURE);
   }
 
-  token = strtok(line, LSH_TOK_DELIM);
+  token = strtok(line, KSH_TOK_DELIM);
   while (token != NULL) {
     tokens[position] = token;
     position++;
 
     if (position >= bufsize) {
-      bufsize += LSH_TOK_BUFSIZE;
+      bufsize += KSH_TOK_BUFSIZE;
       tokens_backup = tokens;
       tokens = realloc(tokens, bufsize * sizeof(char*));
       if (!tokens) {
 		free(tokens_backup);
-        fprintf(stderr, "lsh: allocation error\n");
+        fprintf(stderr, "ksh: allocation error\n");
         exit(EXIT_FAILURE);
       }
     }
 
-    token = strtok(NULL, LSH_TOK_DELIM);
+    token = strtok(NULL, KSH_TOK_DELIM);
   }
   tokens[position] = NULL;
   return tokens;
@@ -205,7 +205,7 @@ char **lsh_split_line(char *line)
 /**
    @brief Loop getting input and executing it.
  */
-void lsh_loop(void)
+void ksh_loop(void)
 {
   char *line;
   char **args;
@@ -213,9 +213,9 @@ void lsh_loop(void)
 
   do {
     printf("> ");
-    line = lsh_read_line();
-    args = lsh_split_line(line);
-    status = lsh_execute(args);
+    line = ksh_read_line();
+    args = ksh_split_line(line);
+    status = ksh_execute(args);
 
     free(line);
     free(args);
@@ -233,7 +233,7 @@ int main(int argc, char **argv)
   // Load config files, if any.
 
   // Run command loop.
-  lsh_loop();
+  ksh_loop();
 
   // Perform any shutdown/cleanup.
 
