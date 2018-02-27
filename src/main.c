@@ -69,6 +69,8 @@ char *builtin_str[] = {
   "man"
 };
 
+char currentDir[100];
+
 int (*builtin_func[]) (char **) = {
   &ksh_cd,
   &ksh_help,
@@ -282,7 +284,9 @@ void ksh_loop(void)
   int status;
 
   do {
-    printf("> ");
+      if(getcwd(currentDir, sizeof(currentDir)) == NULL)
+          perror("ksh");
+    printf("%s> ",currentDir);
     line = ksh_read_line();
     args = ksh_split_line(line);
     status = ksh_execute(args);
@@ -290,6 +294,14 @@ void ksh_loop(void)
     free(line);
     free(args);
   } while (status);
+}
+
+void ksh_init(void)
+{
+    char *homePath = getenv("HOME");
+    if (chdir(homePath) != 0) {
+        perror("ksh");
+    }
 }
 
 /**
@@ -301,6 +313,9 @@ void ksh_loop(void)
 int main(int argc, char **argv)
 {
   // Load config files, if any.
+
+  // 转到当前用户目录
+  ksh_init();
 
   // Run command loop.
   ksh_loop();
