@@ -22,7 +22,11 @@ int ksh_cp(char **args)
     if(access(args[2], F_OK) == 0)
         fgFileExist = true;
     else
+    {
         fgFileExist = false;
+        if((out_fd = creat(args[2], COPY_MODE)) == -1)
+            perror("ksh");
+    }
 
     while ((n_chars = read(in_fd, buf, BUFFER_SIZE)) > 0)
     {
