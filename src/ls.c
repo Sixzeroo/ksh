@@ -43,17 +43,24 @@ int ksh_ls(char **args)
     // 读取文件信息
     while ((entry = readdir(dirptr)) != 0)
     {
-        if(!a_symbol)
+        if(!a_symbol && entry->d_name[0] == '.')
+            continue;
+        // 文件夹显示不同的信息
+        if(entry->d_type == 4)
         {
-            if(entry->d_name[0] == '.')
-                continue;
-        }
-        if(l_symbol)
-        {
-            printf("%s\t%s\n", entry->d_name, entry->d_type==4?"dir":"file");
+            if(l_symbol)
+                printf("\e[0;36m %s\t%s\n\e[0m",entry->d_name,"dir");
+            else
+                printf("\e[0;36m %s\t\e[0m", entry->d_name);
         }
         else
-            printf("%s\t", entry->d_name);
+        {
+            if(l_symbol)
+                printf("%s\t%s\n",entry->d_name,"dir");
+            else
+                printf("%s\t", entry->d_name);
+        }
+
     }
 
     printf("\n");
