@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "man.c"
 #include "cd.c"
 #include "pwd.c"
 #include "ls.c"
@@ -64,7 +65,8 @@ char *builtin_str[] = {
   "kill",
   "ps",
   "tree",
-  "df"
+  "df",
+  "man"
 };
 
 int (*builtin_func[]) (char **) = {
@@ -90,7 +92,8 @@ int (*builtin_func[]) (char **) = {
   &ksh_kill,
   &ksh_ps,
   &ksh_tree,
-  &ksh_df
+  &ksh_df,
+  &ksh_man
 };
 
 int ksh_num_builtins() {
