@@ -12,14 +12,18 @@ void listdirtree(char *dirname,int depth);
 
 int ksh_tree(char **argv)
 {
-//    if(argc == 1)
-//        listdirtree(".",0);
-//    else
-//    {
-//        printf("%s\n",argv[1]);
-//        listdirtree(*++argv,0);
-//    }
-    listdirtree(".",0);
+    /**
+     * @author lx
+     * tree path 显示某文件目录下的树状结构
+     */
+      if( getArgslen(argv)==2 )
+      {
+          listdirtree(argv[1],0);
+      }
+      else
+      {
+        perror("路径错误") ;
+      }
     return 1;
 }
 

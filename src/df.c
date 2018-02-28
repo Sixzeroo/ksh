@@ -25,13 +25,15 @@ int ksh_df(char **args){
         return 1 ;
     }
 
+    printf("文件系统  block总数  block已用  block未用  已用占比  挂载点  \n");
+
     while( fgets(tmpline, SIZE1, fp) != NULL ){
         pt1=strchr(tmpline, SPACE);
         pt2=pt1+sizeof(char);
         *pt1='\0';
         pt3=strchr(pt2,SPACE);
         *pt3='\0';
-        if(strstr(tmpline,"/dev") != NULL ){
+        if(strstr(tmpline,"/dev") != NULL  || strstr(tmpline,"tmpfs") != NULL ){
             displayapartition(tmpline,pt2);
         }
     }
@@ -46,12 +48,12 @@ int displayapartition(char * pt,char * pt1){
     int usage;
     usage=((buf.f_blocks-buf.f_bfree)*100/buf.f_blocks);
 
-    printf("%s ",pt);
-    printf("%ld ",buf.f_blocks);
-    printf("%ld ",buf.f_blocks-buf.f_bfree);
-    printf("%ld ",buf.f_bavail);
-    printf("%d%% ",usage);
-    printf("%s ",pt1);
+    printf("%s  ",pt);
+    printf("%ld  ",buf.f_blocks);
+    printf("%ld  ",buf.f_blocks-buf.f_bfree);
+    printf("%ld  ",buf.f_bavail);
+    printf("%d%%  ",usage);
+    printf("%s  ",pt1);
     printf("\n");
 
     return 0;

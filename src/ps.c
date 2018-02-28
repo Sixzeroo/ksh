@@ -25,8 +25,7 @@ int ksh_ps(char **args)
         /* 跳过系统信息目录，所有进程的目录全都是数字，而系统信息目录全都不是数字 */
         if( (entry->d_name[0] <='0' ) || (entry->d_name[0] >= '9'))
             continue;
-        /* 使用sprintf完成拼接路径，其中两个%s会由entry->d_name表示的进程ID替
-        代 */
+        /* 使用sprintf完成拼接路径，其中两个%s会由entry->d_name表示的进程ID替代 */
         sprintf(path, "/proc/%s/task/%s/status", entry->d_name,entry->d_name);
         fp = fopen(path, "r"); /* 打开文件 */
         if(fp == NULL){
