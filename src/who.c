@@ -19,6 +19,7 @@ int ksh_who(char **args)
         if(um->ut_type != USER_PROCESS)
             continue;
         time_t tm;
+        time ( &tm );
         strftime(timebuf, 24, "%F %R", localtime(&tm));
         printf("%-12s%-12s%-20.20s  (%s)\n", um->ut_user, um->ut_line, timebuf, um->ut_host);
     }
