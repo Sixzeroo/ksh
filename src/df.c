@@ -5,8 +5,9 @@
 #include <sys/vfs.h>
 #include <math.h>
 #define SIZE1 10000
-#define FN "/etc/mtab"
+#define FN "/etc/mtab" // 文件描述 : 系统已经装载的文件系统，包括操作系统建立的虚拟文件
 #define SPACE ' '
+// 每块当做4096字节来模拟　
 
 int displayapartition(char * pt,char * pt1);
 
