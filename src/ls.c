@@ -56,7 +56,7 @@ int ksh_ls(char **args)
         else
         {
             if(l_symbol)
-                printf("%s\t%s\n",entry->d_name,"dir");
+                printf("%s\t%s\n",entry->d_name,"file");
             else
                 printf("%s\t", entry->d_name);
         }
