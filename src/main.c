@@ -99,6 +99,7 @@ int (*builtin_func[]) (char **) = {
 };
 
 int ksh_num_builtins() {
+  /* 算出实现的指令数 */
   return sizeof(builtin_str) / sizeof(char *);
 }
 
@@ -177,16 +178,16 @@ int ksh_execute(char **args)
   int i;
 
   if (args[0] == NULL) {
-    // An empty command was entered.
+    // 输入空指令
     return 1;
   }
-
+  //如果执行的指令已经被实现,则执行已经实现的 , 如 cd 指令会执行 ksh_cd
   for (i = 0; i < ksh_num_builtins(); i++) {
     if (strcmp(args[0], builtin_str[i]) == 0) {
       return (*builtin_func[i])(args);
     }
   }
-
+  //若该指令未实现,则会执行linux自带的该指令
   printf("Use system shell:\n");
   return ksh_launch(args);
 }
@@ -215,6 +216,7 @@ char *ksh_read_line(void)
     if (c == EOF) {
       exit(EXIT_SUCCESS);
     } else if (c == '\n') {
+        // 遇到回车就返回该行指令
       buffer[position] = '\0';
       return buffer;
     } else {
@@ -241,6 +243,7 @@ char *ksh_read_line(void)
    @param line The line.
    @return Null-terminated array of tokens.
  */
+// " \t\r\n\a" 按照这些分隔符来分割字符串
 char **ksh_split_line(char *line)
 {
   int bufsize = KSH_TOK_BUFSIZE, position = 0;
@@ -276,6 +279,7 @@ char **ksh_split_line(char *line)
 
 /**
    @brief Loop getting input and executing it.
+
  */
 void ksh_loop(void)
 {
@@ -284,12 +288,13 @@ void ksh_loop(void)
   int status;
 
   do {
+    // 获取当前所在路径
       if(getcwd(currentDir, sizeof(currentDir)) == NULL)
           perror("ksh");
-    printf("%s> ",currentDir);
-    line = ksh_read_line();
-    args = ksh_split_line(line);
-    status = ksh_execute(args);
+    printf("%s> ",currentDir); // ex. /home/lx>
+    line = ksh_read_line();  // 读取一行指令
+    args = ksh_split_line(line); // 分割开
+    status = ksh_execute(args);  // 想指令传过去
 
     free(line);
     free(args);
@@ -298,7 +303,9 @@ void ksh_loop(void)
 
 void ksh_init(void)
 {
+    // 获取环境变量 getenv
     char *homePath = getenv("HOME");
+    // 跳转到家目录
     if (chdir(homePath) != 0) {
         perror("ksh");
     }
