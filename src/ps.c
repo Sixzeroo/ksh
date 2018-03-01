@@ -7,6 +7,9 @@
 #include <fcntl.h>
 #define MAX 1024
 #define PATH_SIZE 128
+
+//   /proc/PID/status
+
 int ksh_ps(char **args)
 {
     DIR *dir;
@@ -48,7 +51,7 @@ int ksh_ps(char **args)
             if(buf[0] == 'P'
                && buf[1] == 'i'
                && buf[2] == 'd'){
-                printf("\t\t%s", &buf[5]); /* 输出PID后就结束循环 */
+                printf("\t%s", &buf[5]); /* 输出PID后就结束循环 */
                 break;
             }
         }

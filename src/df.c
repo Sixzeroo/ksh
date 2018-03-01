@@ -26,7 +26,8 @@ int ksh_df(char **args){
         return 1 ;
     }
 
-    printf("文件系统  block总数  block已用  block未用  已用占比  挂载点  \n");
+//    printf("文件系统  block总数  block已用   已用占比  挂载点  \n");
+    printf("%-30s\t%-13s\t%-8s\t%-8s\t%-6s\n","文件系统", "block总数", "block已用", "已用占比", "挂载点");
 
     while( fgets(tmpline, SIZE1, fp) != NULL ){
         pt1=strchr(tmpline, SPACE);
@@ -34,6 +35,7 @@ int ksh_df(char **args){
         *pt1='\0';
         pt3=strchr(pt2,SPACE);
         *pt3='\0';
+        // 先读 "/etc/mtab" 中的文件系统
         if(strstr(tmpline,"/dev") != NULL  || strstr(tmpline,"tmpfs") != NULL ){
             displayapartition(tmpline,pt2);
         }
@@ -49,13 +51,11 @@ int displayapartition(char * pt,char * pt1){
     int usage;
     usage=((buf.f_blocks-buf.f_bfree)*100/buf.f_blocks);
 
-    printf("%s  ",pt);
-    printf("%ld  ",buf.f_blocks);
-    printf("%ld  ",buf.f_blocks-buf.f_bfree);
-    printf("%ld  ",buf.f_bavail);
-    printf("%d%%  ",usage);
-    printf("%s  ",pt1);
-    printf("\n");
-
+//    printf("%s  ",pt);
+//    printf("%ld  ",buf.f_blocks); // 文件系统数据块总数
+//    printf("%ld  ",buf.f_blocks-buf.f_bfree); // 可用数据块数
+//    printf("%d%%  ",usage);
+//    printf("%s  ",pt1);
+    printf("%-30s\t%-13ld\t%-8ld\t%-8d%%\t%-6s\n",pt, buf.f_blocks,buf.f_blocks-buf.f_bfree , usage, pt1);
     return 0;
 }

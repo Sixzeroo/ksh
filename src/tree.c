@@ -35,6 +35,7 @@ void listdirtree(char *dirname,int depth)
         fprintf(stderr,"listdirtree:can't read file %s information!\n",dirname);
         return;
     }
+    // 是文件夹
     if((stbuf.st_mode & S_IFMT) == S_IFDIR)
         s_dirwalk(dirname,depth,listdirtree);
 }
@@ -49,6 +50,7 @@ void s_dirwalk(char *dirname,int depth,void (*fcn)(char *,int))
         fprintf(stderr,"s_dirwalk:can't open %s\n",dirname);
         return;
     }
+    // 循环读取 dp 目录下的 子目录
     while((fip = readdir(dp)) != NULL)
     {
         if(strcmp(fip->d_name,".") == 0 || strcmp(fip->d_name,"..") == 0)
